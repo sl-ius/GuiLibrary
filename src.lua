@@ -1,6 +1,6 @@
 --[[
 
-Lynxfield Interface Suite
+Rayfield Interface Suite Mod
 by Sirius & Modified by Sius
 
 shlex | Designing + Programming
@@ -13,17 +13,17 @@ Sius  | Programming + Designing
 
 local Release = "Beta 8"
 local NotificationDuration = 6.5
-local LynxfieldFolder = "Lynxfield"
-local ConfigurationFolder = LynxfieldFolder.."/Configurations"
+local RayfieldFolder = "Rayfield"
+local ConfigurationFolder = RayfieldFolder.."/Configurations"
 local ConfigurationExtension = ".rfld"
 
 
 
-local LynxfieldLibrary = {
+local RayfieldLibrary = {
 	Flags = {},
 	Theme = {
 		Default = {
-			TextFont = "Default", -- Default will use the various font faces used across Lynxfield
+			TextFont = "Default", -- Default will use the various font faces used across Rayfield
 			TextColor = Color3.fromRGB(240, 240, 240),
 
 			Background = Color3.fromRGB(25, 25, 25),
@@ -62,7 +62,7 @@ local LynxfieldLibrary = {
 			PlaceholderColor = Color3.fromRGB(178, 178, 178)
 		},
 		Light = {
-			TextFont = "Gotham", -- Default will use the various font faces used across Lynxfield
+			TextFont = "Gotham", -- Default will use the various font faces used across Rayfield
 			TextColor = Color3.fromRGB(50, 50, 50), -- i need to make all text 240, 240, 240 and base gray on transparency not color to do this
 
 			Background = Color3.fromRGB(255, 255, 255),
@@ -115,34 +115,34 @@ local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 
 -- Interface Management
-local Lynxfield = game:GetObjects("rbxassetid://14084109362")[1]
+local Rayfield = game:GetObjects("rbxassetid://14084109362")[1]
 
-Lynxfield.Enabled = false
+Rayfield.Enabled = false
 
 
 if gethui then
-	Lynxfield.Parent = gethui()
+	Rayfield.Parent = gethui()
 elseif syn.protect_gui then 
-	syn.protect_gui(Lynxfield)
-	Lynxfield.Parent = CoreGui
+	syn.protect_gui(Rayfield)
+	Rayfield.Parent = CoreGui
 elseif CoreGui:FindFirstChild("RobloxGui") then
-	Lynxfield.Parent = CoreGui:FindFirstChild("RobloxGui")
+	Rayfield.Parent = CoreGui:FindFirstChild("RobloxGui")
 else
-	Lynxfield.Parent = CoreGui
+	Rayfield.Parent = CoreGui
 end
 
 if gethui then
 	for _, Interface in ipairs(gethui():GetChildren()) do
-		if Interface.Name == Lynxfield.Name and Interface ~= Lynxfield then
+		if Interface.Name == Rayfield.Name and Interface ~= Rayfield then
 			Interface.Enabled = false
-			Interface.Name = "Lynxfield-Old"
+			Interface.Name = "Rayfield-Old"
 		end
 	end
 else
 	for _, Interface in ipairs(CoreGui:GetChildren()) do
-		if Interface.Name == Lynxfield.Name and Interface ~= Lynxfield then
+		if Interface.Name == Rayfield.Name and Interface ~= Rayfield then
 			Interface.Enabled = false
-			Interface.Name = "Lynxfield-Old"
+			Interface.Name = "Rayfield-Old"
 		end
 	end
 end
@@ -150,13 +150,13 @@ end
 -- Object Variables
 
 local Camera = workspace.CurrentCamera
-local Main = Lynxfield.Main
+local Main = Rayfield.Main
 local Topbar = Main.Topbar
 local Elements = Main.Elements
 local LoadingFrame = Main.LoadingFrame
 local TabList = Main.TabList
 
-Lynxfield.DisplayOrder = 100
+Rayfield.DisplayOrder = 100
 LoadingFrame.Version.Text = Release
 
 
@@ -168,13 +168,13 @@ local CEnabled = false
 local Minimised = false
 local Hidden = false
 local Debounce = false
-local Notifications = Lynxfield.Notifications
+local Notifications = Rayfield.Notifications
 
-local SelectedTheme = LynxfieldLibrary.Theme.Default
+local SelectedTheme = RayfieldLibrary.Theme.Default
 
 function ChangeTheme(ThemeName)
-	SelectedTheme = LynxfieldLibrary.Theme[ThemeName]
-	for _, obj in ipairs(Lynxfield:GetDescendants()) do
+	SelectedTheme = RayfieldLibrary.Theme[ThemeName]
+	for _, obj in ipairs(Rayfield:GetDescendants()) do
 		if obj.ClassName == "TextLabel" or obj.ClassName == "TextBox" or obj.ClassName == "TextButton" then
 			if SelectedTheme.TextFont ~= "Default" then 
 				obj.TextColor3 = SelectedTheme.TextColor
@@ -183,14 +183,14 @@ function ChangeTheme(ThemeName)
 		end
 	end
 
-	Lynxfield.Main.BackgroundColor3 = SelectedTheme.Background
-	Lynxfield.Main.Topbar.BackgroundColor3 = SelectedTheme.Topbar
-	Lynxfield.Main.Topbar.CornerRepair.BackgroundColor3 = SelectedTheme.Topbar
-	Lynxfield.Main.Shadow.Image.ImageColor3 = SelectedTheme.Shadow
+	Rayfield.Main.BackgroundColor3 = SelectedTheme.Background
+	Rayfield.Main.Topbar.BackgroundColor3 = SelectedTheme.Topbar
+	Rayfield.Main.Topbar.CornerRepair.BackgroundColor3 = SelectedTheme.Topbar
+	Rayfield.Main.Shadow.Image.ImageColor3 = SelectedTheme.Shadow
 
-	Lynxfield.Main.Topbar.ChangeSize.ImageColor3 = SelectedTheme.TextColor
-	Lynxfield.Main.Topbar.Hide.ImageColor3 = SelectedTheme.TextColor
-	Lynxfield.Main.Topbar.Theme.ImageColor3 = SelectedTheme.TextColor
+	Rayfield.Main.Topbar.ChangeSize.ImageColor3 = SelectedTheme.TextColor
+	Rayfield.Main.Topbar.Hide.ImageColor3 = SelectedTheme.TextColor
+	Rayfield.Main.Topbar.Theme.ImageColor3 = SelectedTheme.TextColor
 
 	for _, TabPage in ipairs(Elements:GetChildren()) do
 		for _, Element in ipairs(TabPage:GetChildren()) do
@@ -244,16 +244,16 @@ end
 local function LoadConfiguration(Configuration)
 	local Data = HttpService:JSONDecode(Configuration)
 	for FlagName, FlagValue in next, Data do
-		if LynxfieldLibrary.Flags[FlagName] then
+		if RayfieldLibrary.Flags[FlagName] then
 			spawn(function() 
-				if LynxfieldLibrary.Flags[FlagName].Type == "ColorPicker" then
-					LynxfieldLibrary.Flags[FlagName]:Set(UnpackColor(FlagValue))
+				if RayfieldLibrary.Flags[FlagName].Type == "ColorPicker" then
+					RayfieldLibrary.Flags[FlagName]:Set(UnpackColor(FlagValue))
 				else
-					if LynxfieldLibrary.Flags[FlagName].CurrentValue or LynxfieldLibrary.Flags[FlagName].CurrentKeybind or LynxfieldLibrary.Flags[FlagName].CurrentOption or LynxfieldLibrary.Flags[FlagName].Color ~= FlagValue then LynxfieldLibrary.Flags[FlagName]:Set(FlagValue) end
+					if RayfieldLibrary.Flags[FlagName].CurrentValue or RayfieldLibrary.Flags[FlagName].CurrentKeybind or RayfieldLibrary.Flags[FlagName].CurrentOption or RayfieldLibrary.Flags[FlagName].Color ~= FlagValue then RayfieldLibrary.Flags[FlagName]:Set(FlagValue) end
 				end    
 			end)
 		else
-			LynxfieldLibrary:Notify({Title = "Flag Error", Content = "Lynxfield was unable to find '"..FlagName.. "'' in the current script"})
+			RayfieldLibrary:Notify({Title = "Flag Error", Content = "Rayfield was unable to find '"..FlagName.. "'' in the current script"})
 		end
 	end
 end
@@ -261,7 +261,7 @@ end
 local function SaveConfiguration()
 	if not CEnabled then return end
 	local Data = {}
-	for i,v in pairs(LynxfieldLibrary.Flags) do
+	for i,v in pairs(RayfieldLibrary.Flags) do
 		if v.Type == "ColorPicker" then
 			Data[i] = PackColor(v.Color)
 		else
@@ -492,7 +492,7 @@ local neon = (function() -- Open sourced neon module
 
 end)()
 
-function LynxfieldLibrary:Notify(NotificationSettings)
+function RayfieldLibrary:Notify(NotificationSettings)
 	spawn(function()
 		local ActionCompleted = true
 		local Notification = Notifications.Template:Clone()
@@ -518,7 +518,7 @@ function LynxfieldLibrary:Notify(NotificationSettings)
 				ActionCompleted = false
 				local NewAction = Notification.Actions.Template:Clone()
 				NewAction.BackgroundColor3 = SelectedTheme.NotificationActionsBackground
-				if SelectedTheme ~= LynxfieldLibrary.Theme.Default then
+				if SelectedTheme ~= RayfieldLibrary.Theme.Default then
 					NewAction.TextColor3 = SelectedTheme.TextColor
 				end
 				NewAction.Name = Action.Name
@@ -532,7 +532,7 @@ function LynxfieldLibrary:Notify(NotificationSettings)
 				NewAction.MouseButton1Click:Connect(function()
 					local Success, Response = pcall(Action.Callback)
 					if not Success then
-						print("Lynxfield | Action: "..Action.Name.." Callback Error " ..tostring(Response))
+						print("Rayfield | Action: "..Action.Name.." Callback Error " ..tostring(Response))
 					end
 					ActionCompleted = true
 				end)
@@ -581,7 +581,7 @@ function LynxfieldLibrary:Notify(NotificationSettings)
 			end
 		end
 
-		if Lynxfield.Name == "Lynxfield" then
+		if Rayfield.Name == "Rayfield" then
 			neon:BindFrame(Notification.BlurModule, {
 				Transparency = 0.98;
 				BrickColor = BrickColor.new("Institutional white");
@@ -638,7 +638,7 @@ end
 
 function Hide()
 	Debounce = true
-	LynxfieldLibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping RightShift", Duration = 7})
+	RayfieldLibrary:Notify({Title = "Interface Hidden", Content = "The interface has been hidden, you can unhide the interface by tapping RightShift", Duration = 7})
 	TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 470, 0, 400)}):Play()
 	TweenService:Create(Main.Topbar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 470, 0, 45)}):Play()
 	TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
@@ -873,7 +873,7 @@ function Minimise()
 	Debounce = false
 end
 
-function LynxfieldLibrary:CreateWindow(Settings)
+function RayfieldLibrary:CreateWindow(Settings)
 	local Passthrough = false
 	Topbar.Title.Text = Settings.Name
 	Main.Size = UDim2.new(0, 450, 0, 260)
@@ -884,10 +884,10 @@ function LynxfieldLibrary:CreateWindow(Settings)
 	Main.Shadow.Image.ImageTransparency = 1
 	LoadingFrame.Version.TextTransparency = 1
     LoadingFrame.ImageLabel.ImageTransparency = 1
-	LoadingFrame.Title.Text = Settings.LoadingTitle or "Lynxfield Interface Suite"
+	LoadingFrame.Title.Text = Settings.LoadingTitle or "Rayfield Interface Suite"
 	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius"
-	if Settings.LoadingTitle ~= "Lynxfield Interface Suite" then
-		LoadingFrame.Version.Text = "Lynxfield UI"
+	if Settings.LoadingTitle ~= "Rayfield Interface Suite" then
+		LoadingFrame.Version.Text = "Rayfield UI"
 	end
 	Topbar.Visible = false
 	Elements.Visible = false
@@ -898,7 +898,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 		if not Settings.ConfigurationSaving.FileName then
 			Settings.ConfigurationSaving.FileName = tostring(game.PlaceId)
 		end
-		if not isfolder(LynxfieldFolder.."/".."Configuration Folders") then
+		if not isfolder(RayfieldFolder.."/".."Configuration Folders") then
 
 		end
 		if Settings.ConfigurationSaving.Enabled == nil then
@@ -928,10 +928,10 @@ function LynxfieldLibrary:CreateWindow(Settings)
 	end
 
 	if Settings.Discord then
-		if not isfolder(LynxfieldFolder.."/Discord Invites") then
-			makefolder(LynxfieldFolder.."/Discord Invites")
+		if not isfolder(RayfieldFolder.."/Discord Invites") then
+			makefolder(RayfieldFolder.."/Discord Invites")
 		end
-		if not isfile(LynxfieldFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension) then
+		if not isfile(RayfieldFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension) then
 			if request then
 				request({
 					Url = 'http://127.0.0.1:6463/rpc?v=1',
@@ -949,7 +949,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			end
 
 			if Settings.Discord.RememberJoins then -- We do logic this way so if the developer changes this setting, the user still won't be prompted, only new users
-				writefile(LynxfieldFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension,"Lynxfield RememberJoins is true for this invite, this invite will not ask you to join again")
+				writefile(RayfieldFolder.."/Discord Invites".."/"..Settings.Discord.Invite..ConfigurationExtension,"Rayfield RememberJoins is true for this invite, this invite will not ask you to join again")
 			end
 		else
 
@@ -962,8 +962,8 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			return
 		end
 
-		if not isfolder(LynxfieldFolder.."/Key System") then
-			makefolder(LynxfieldFolder.."/Key System")
+		if not isfolder(RayfieldFolder.."/Key System") then
+			makefolder(RayfieldFolder.."/Key System")
 		end
 
 		if typeof(Settings.KeySettings.Key) == "string" then Settings.KeySettings.Key = {Settings.KeySettings.Key} end
@@ -975,7 +975,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					Settings.KeySettings.Key[i] = string.gsub(Settings.KeySettings.Key[i], " ", "")
 				end)
 				if not Success then
-					print("Lynxfield | "..Key.." Error " ..tostring(Response))
+					print("Rayfield | "..Key.." Error " ..tostring(Response))
 				end
 			end
 		end
@@ -984,9 +984,9 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			Settings.KeySettings.FileName = "No file name specified"
 		end
 
-		if isfile(LynxfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
+		if isfile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension) then
 			for _, MKey in ipairs(Settings.KeySettings.Key) do
-				if string.find(readfile(LynxfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
+				if string.find(readfile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension), MKey) then
 					Passthrough = true
 				end
 			end
@@ -994,13 +994,13 @@ function LynxfieldLibrary:CreateWindow(Settings)
 
 		if not Passthrough then
 			local AttemptsRemaining = math.random(2,6)
-			Lynxfield.Enabled = false
+			Rayfield.Enabled = false
 			local KeyUI = game:GetObjects("rbxassetid://11380036235")[1]
 
 			if gethui then
 				KeyUI.Parent = gethui()
 			elseif syn.protect_gui then
-				syn.protect_gui(Lynxfield)
+				syn.protect_gui(Rayfield)
 				KeyUI.Parent = CoreGui
 			else
 				KeyUI.Parent = CoreGui
@@ -1085,9 +1085,9 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					Passthrough = true
 					if Settings.KeySettings.SaveKey then
 						if writefile then
-							writefile(LynxfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, FoundKey)
+							writefile(RayfieldFolder.."/Key System".."/"..Settings.KeySettings.FileName..ConfigurationExtension, FoundKey)
 						end
-						LynxfieldLibrary:Notify({Title = "Key System", Content = "The key for this script has been saved successfully"})
+						RayfieldLibrary:Notify({Title = "Key System", Content = "The key for this script has been saved successfully"})
 					end
 				else
 					if AttemptsRemaining == 0 then
@@ -1133,7 +1133,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 				TweenService:Create(KeyMain.NoteMessage, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 				TweenService:Create(KeyMain.Hide, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 				wait(0.51)
-				LynxfieldLibrary:Destroy()
+				RayfieldLibrary:Destroy()
 				KeyUI:Destroy()
 			end)
 		else
@@ -1146,7 +1146,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 
 	Notifications.Template.Visible = false
 	Notifications.Visible = true
-	Lynxfield.Enabled = true
+	Rayfield.Enabled = true
 	wait(0.5)
 	TweenService:Create(Main, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
 	TweenService:Create(Main.Shadow.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0.55}):Play()
@@ -1213,7 +1213,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			Elements.UIPageLayout.Animated = true
 		end
 
-		if SelectedTheme ~= LynxfieldLibrary.Theme.Default then
+		if SelectedTheme ~= RayfieldLibrary.Theme.Default then
 			TabButton.Shadow.Visible = false
 		end
 		TabButton.UIStroke.Color = SelectedTheme.TabStroke
@@ -1301,7 +1301,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Button.ElementIndicator, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 					TweenService:Create(Button.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Button.Title.Text = "Callback Error"
-					print("Lynxfield | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..ButtonSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Button.Title.Text = ButtonSettings.Name
 					TweenService:Create(Button, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -1530,7 +1530,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and ColorPickerSettings.Flag then
-					LynxfieldLibrary.Flags[ColorPickerSettings.Flag] = ColorPickerSettings
+					RayfieldLibrary.Flags[ColorPickerSettings.Flag] = ColorPickerSettings
 				end
 			end
 
@@ -1666,7 +1666,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Input.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Input.Title.Text = "Callback Error"
-					print("Lynxfield | "..InputSettings.Name.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..InputSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Input.Title.Text = InputSettings.Name
 					TweenService:Create(Input, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -1870,7 +1870,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 						TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 						TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 						Dropdown.Title.Text = "Callback Error"
-						print("Lynxfield | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+						print("Rayfield | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 						wait(0.5)
 						Dropdown.Title.Text = DropdownSettings.Name
 						TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -1943,7 +1943,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Dropdown.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Dropdown.Title.Text = "Callback Error"
-					print("Lynxfield | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..DropdownSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Dropdown.Title.Text = DropdownSettings.Name
 					TweenService:Create(Dropdown, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -1964,7 +1964,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and DropdownSettings.Flag then
-					LynxfieldLibrary.Flags[DropdownSettings.Flag] = DropdownSettings
+					RayfieldLibrary.Flags[DropdownSettings.Flag] = DropdownSettings
 				end
 			end
 
@@ -2041,7 +2041,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 							TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 							TweenService:Create(Keybind.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 							Keybind.Title.Text = "Callback Error"
-							print("Lynxfield | "..KeybindSettings.Name.." Callback Error " ..tostring(Response))
+							print("Rayfield | "..KeybindSettings.Name.." Callback Error " ..tostring(Response))
 							wait(0.5)
 							Keybind.Title.Text = KeybindSettings.Name
 							TweenService:Create(Keybind, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2075,7 +2075,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			end
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and KeybindSettings.Flag then
-					LynxfieldLibrary.Flags[KeybindSettings.Flag] = KeybindSettings
+					RayfieldLibrary.Flags[KeybindSettings.Flag] = KeybindSettings
 				end
 			end
 			return KeybindSettings
@@ -2096,7 +2096,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			Toggle.Title.TextTransparency = 1
 			Toggle.Switch.BackgroundColor3 = SelectedTheme.ToggleBackground
 
-			if SelectedTheme ~= LynxfieldLibrary.Theme.Default then
+			if SelectedTheme ~= RayfieldLibrary.Theme.Default then
 				Toggle.Switch.Shadow.Visible = false
 			end
 
@@ -2162,7 +2162,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("Lynxfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2210,7 +2210,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Toggle.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Toggle.Title.Text = "Callback Error"
-					print("Lynxfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..ToggleSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Toggle.Title.Text = ToggleSettings.Name
 					TweenService:Create(Toggle, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2221,7 +2221,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and ToggleSettings.Flag then
-					LynxfieldLibrary.Flags[ToggleSettings.Flag] = ToggleSettings
+					RayfieldLibrary.Flags[ToggleSettings.Flag] = ToggleSettings
 				end
 			end
 
@@ -2241,7 +2241,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			Slider.UIStroke.Transparency = 1
 			Slider.Title.TextTransparency = 1
 
-			if SelectedTheme ~= LynxfieldLibrary.Theme.Default then
+			if SelectedTheme ~= RayfieldLibrary.Theme.Default then
 				Slider.Main.Shadow.Visible = false
 			end
 
@@ -2325,7 +2325,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 								TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 								TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 								Slider.Title.Text = "Callback Error"
-								print("Lynxfield | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+								print("Rayfield | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 								wait(0.5)
 								Slider.Title.Text = SliderSettings.Name
 								TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2352,7 +2352,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = Color3.fromRGB(85, 0, 0)}):Play()
 					TweenService:Create(Slider.UIStroke, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
 					Slider.Title.Text = "Callback Error"
-					print("Lynxfield | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
+					print("Rayfield | "..SliderSettings.Name.." Callback Error " ..tostring(Response))
 					wait(0.5)
 					Slider.Title.Text = SliderSettings.Name
 					TweenService:Create(Slider, TweenInfo.new(0.6, Enum.EasingStyle.Quint), {BackgroundColor3 = SelectedTheme.ElementBackground}):Play()
@@ -2363,7 +2363,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			end
 			if Settings.ConfigurationSaving then
 				if Settings.ConfigurationSaving.Enabled and SliderSettings.Flag then
-					LynxfieldLibrary.Flags[SliderSettings.Flag] = SliderSettings
+					RayfieldLibrary.Flags[SliderSettings.Flag] = SliderSettings
 				end
 			end
 			return SliderSettings
@@ -2412,8 +2412,8 @@ function LynxfieldLibrary:CreateWindow(Settings)
 end
 
 
-function LynxfieldLibrary:Destroy()
-	Lynxfield:Destroy()
+function RayfieldLibrary:Destroy()
+	Rayfield:Destroy()
 end
 
 Topbar.ChangeSize.MouseButton1Click:Connect(function()
@@ -2469,17 +2469,17 @@ for _, TopbarButton in ipairs(Topbar:GetChildren()) do
 end
 
 
-function LynxfieldLibrary:LoadConfiguration()
+function RayfieldLibrary:LoadConfiguration()
 	if CEnabled then
 		pcall(function()
 			if isfile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension) then
 				LoadConfiguration(readfile(ConfigurationFolder .. "/" .. CFileName .. ConfigurationExtension))
-				LynxfieldLibrary:Notify({Title = "Configuration Loaded", Content = "The configuration file for this script has been loaded from a previous session"})
+				RayfieldLibrary:Notify({Title = "Configuration Loaded", Content = "The configuration file for this script has been loaded from a previous session"})
 			end
 		end)
 	end
 end
 
-task.delay(3.5, LynxfieldLibrary.LoadConfiguration, LynxfieldLibrary)
+task.delay(3.5, RayfieldLibrary.LoadConfiguration, RayfieldLibrary)
 
-return LynxfieldLibrary
+return RayfieldLibrary
