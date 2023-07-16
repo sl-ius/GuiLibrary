@@ -10,7 +10,7 @@ iRay  | Programming
 
 
 
-local Release = "Beta 8"
+local Release = "Beta 1"
 local NotificationDuration = 6.5
 local LynxfieldFolder = "Lynxfield"
 local ConfigurationFolder = LynxfieldFolder.."/Configurations"
