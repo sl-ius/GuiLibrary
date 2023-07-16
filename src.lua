@@ -1,10 +1,11 @@
 --[[
 
 Lynxfield Interface Suite
-by Sirius
+by Sirius & Modified by Sius
 
 shlex | Designing + Programming
 iRay  | Programming
+Sius  | Programming + Designing
 
 ]]
 
@@ -49,9 +50,9 @@ local LynxfieldLibrary = {
 			SliderStroke = Color3.fromRGB(48, 119, 177),
 
 			ToggleBackground = Color3.fromRGB(30, 30, 30),
-			ToggleEnabled = Color3.fromRGB(0, 146, 214),
+			ToggleEnabled = Color3.fromRGB(93, 55, 159),
 			ToggleDisabled = Color3.fromRGB(100, 100, 100),
-			ToggleEnabledStroke = Color3.fromRGB(0, 170, 255),
+			ToggleEnabledStroke = Color3.fromRGB(93, 55, 159),
 			ToggleDisabledStroke = Color3.fromRGB(125, 125, 125),
 			ToggleEnabledOuterStroke = Color3.fromRGB(100, 100, 100),
 			ToggleDisabledOuterStroke = Color3.fromRGB(65, 65, 65),
@@ -84,8 +85,8 @@ local LynxfieldLibrary = {
 			SecondaryElementStroke = Color3.fromRGB(40, 40, 40), -- For labels and paragraphs
 
 			SliderBackground = Color3.fromRGB(31, 159, 71),
-			SliderProgress = Color3.fromRGB(31, 159, 71),
-			SliderStroke = Color3.fromRGB(42, 216, 94),
+			SliderProgress = Color3.fromRGB(93, 55, 159),
+			SliderStroke = Color3.fromRGB(93, 55, 159),
 
 			ToggleBackground = Color3.fromRGB(170, 203, 60),
 			ToggleEnabled = Color3.fromRGB(32, 214, 29),
@@ -154,10 +155,9 @@ local Topbar = Main.Topbar
 local Elements = Main.Elements
 local LoadingFrame = Main.LoadingFrame
 local TabList = Main.TabList
-local SearchBar = Main.Searchbar
-local Filler = SearchBar.CanvasGroup.Filler
 
 Lynxfield.DisplayOrder = 100
+LoadingFrame.Version.Text = Release
 
 
 -- Variables
@@ -167,8 +167,6 @@ local CFileName = nil
 local CEnabled = false
 local Minimised = false
 local Hidden = false
-local SearchHided = true
-local clicked = false
 local Debounce = false
 local Notifications = Lynxfield.Notifications
 
@@ -756,65 +754,6 @@ function Unhide()
 	Debounce = false
 end
 
-function CloseSearch()
-	Debounce = true
-	TweenService:Create(SearchBar, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 1,Size = UDim2.new(0, 460,0, 35)}):Play()
-	TweenService:Create(SearchBar.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
-	TweenService:Create(SearchBar.Clear, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
-	TweenService:Create(SearchBar.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
-	TweenService:Create(SearchBar.Filter, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
-	TweenService:Create(SearchBar.Shadow.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0.1}):Play()
-	TweenService:Create(SearchBar.Input, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
-	delay(.3,function()
-		SearchBar.Input.Visible = false
-	end)
-	wait(0.5)
-	SearchBar.Visible = false
-	Debounce = false
-end
-function OpenSearch()
-	Debounce = true
-	SearchBar.Visible = true
-	SearchBar.Input.Visible = true
-	TweenService:Create(SearchBar, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {BackgroundTransparency = 0,Size = UDim2.new(0, 480,0, 40)}):Play()
-	TweenService:Create(SearchBar.Icon, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0.5}):Play()
-	TweenService:Create(SearchBar.Shadow.Image, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = 0.1}):Play()
-	TweenService:Create(SearchBar.UIStroke, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
-	TweenService:Create(SearchBar.Clear, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = .8}):Play()
-	TweenService:Create(SearchBar.Filter, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {ImageTransparency = .8}):Play()
-	TweenService:Create(SearchBar.Input, TweenInfo.new(0.4, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
-	wait(0.5)
-	Debounce = false
-end
-SearchBar.Input:GetPropertyChangedSignal('Text'):Connect(function()
-	local InputText=string.upper(SearchBar.Input.Text)
-	for _,page in ipairs(Elements:GetChildren()) do
-		if page ~= 'Template' then
-			for _,Element in pairs(page:GetChildren())do
-				if Element:IsA("Frame") and Element.Name ~= 'Placeholder' and Element.Name ~= 'SectionSpacing' then
-					if InputText==""or string.find(string.upper(Element.Name),InputText)~=nil then
-						Element.Visible=true
-					else
-						Element.Visible=false
-					end
-				end
-			end
-		end
-	end
-end)
-SearchBar.Clear.MouseButton1Down:Connect(function()
-	Filler.Position = UDim2.new(0.957,0,.5,0)
-	Filler.Size = UDim2.new(0,1,0,1)
-	Filler.BackgroundTransparency = .9
-
-	local goal = {}
-	goal.Size = UDim2.new(0,1000,0,500)
-	goal.BackgroundTransparency = 1
-
-	TweenService:Create(Filler, TweenInfo.new(1,Enum.EasingStyle.Sine,Enum.EasingDirection.Out), goal):Play()
-	SearchBar.Input.Text = ''
-end)
-
 function Maximise()
 	Debounce = true
 	Topbar.ChangeSize.Image = "rbxassetid://"..10137941941
@@ -884,70 +823,6 @@ end
 function Minimise()
 	Debounce = true
 	Topbar.ChangeSize.Image = "rbxassetid://"..11036884234
-	if not SearchHided then
-		spawn(CloseSearch)
-	end
-	if not SideBarClosed then
-		spawn(CloseSideBar)
-	end
-	spawn(function()
-		FadeDescription(nil,true)
-	end)
-	for _, tabbtn in ipairs(TopList:GetChildren()) do
-		if tabbtn.ClassName == "Frame" and tabbtn.Name ~= "Placeholder" then
-			TweenService:Create(tabbtn, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
-			TweenService:Create(tabbtn.Image, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
-			TweenService:Create(tabbtn.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
-			TweenService:Create(tabbtn.Shadow, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
-			TweenService:Create(tabbtn.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
-		end
-	end
-
-	for _, tab in ipairs(Elements:GetChildren()) do
-		if tab.Name ~= "Template" and tab.ClassName == "ScrollingFrame" and tab.Name ~= "Placeholder" then
-			for _, element in ipairs(tab:GetChildren()) do
-				if element.ClassName == "Frame" then
-					if element.Name ~= "SectionSpacing" and element.Name ~= "Placeholder" then
-						if element:FindFirstChild('_UIPadding_') then
-							TweenService:Create(element, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
-							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
-						else
-							TweenService:Create(element, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
-							pcall(function()
-								TweenService:Create(element.UIStroke, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {Transparency = 1}):Play()
-							end)
-							TweenService:Create(element.Title, TweenInfo.new(0.3, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
-						end
-						for _, child in ipairs(element:GetChildren()) do
-							if child.ClassName == "Frame" or child.ClassName == "TextLabel" or child.ClassName == "TextBox" or child.ClassName == "ImageButton" or child.ClassName == "ImageLabel" then
-								child.Visible = false
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	TweenService:Create(Topbar.UIStroke, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
-	TweenService:Create(Main.Shadow.Image, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
-	TweenService:Create(Topbar.CornerRepair, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
-	TweenService:Create(Topbar.Divider, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {BackgroundTransparency = 1}):Play()
-	TweenService:Create(Main, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 495, 0, 45)}):Play()
-	TweenService:Create(Topbar, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 495, 0, 45)}):Play()
-
-	wait(0.3)
-
-	Elements.Visible = false
-	TabsList.Visible = false
-
-	wait(0.2)
-	Debounce = false
-end
-
-function Minimise()
-	Debounce = true
-	Topbar.ChangeSize.Image = "rbxassetid://"..11036884234
 
 	for _, tabbtn in ipairs(TabList:GetChildren()) do
 		if tabbtn.ClassName == "Frame" and tabbtn.Name ~= "Placeholder" then
@@ -1007,9 +882,13 @@ function LynxfieldLibrary:CreateWindow(Settings)
 	LoadingFrame.Title.TextTransparency = 1
 	LoadingFrame.Subtitle.TextTransparency = 1
 	Main.Shadow.Image.ImageTransparency = 1
+	LoadingFrame.Version.TextTransparency = 1
     LoadingFrame.ImageLabel.ImageTransparency = 1
 	LoadingFrame.Title.Text = Settings.LoadingTitle or "Lynxfield Interface Suite"
 	LoadingFrame.Subtitle.Text = Settings.LoadingSubtitle or "by Sirius"
+	if Settings.LoadingTitle ~= "Lynxfield Interface Suite" then
+		LoadingFrame.Version.Text = "Lynxfield UI"
+	end
 	Topbar.Visible = false
 	Elements.Visible = false
 	LoadingFrame.Visible = true
@@ -1276,6 +1155,8 @@ function LynxfieldLibrary:CreateWindow(Settings)
 	TweenService:Create(LoadingFrame.Title, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 	wait(0.05)
 	TweenService:Create(LoadingFrame.Subtitle, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
+	wait(0.05)
+	TweenService:Create(LoadingFrame.Version, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {TextTransparency = 0}):Play()
 
 	Elements.Template.LayoutOrder = 100000
 	Elements.Template.Visible = false
@@ -2347,28 +2228,6 @@ function LynxfieldLibrary:CreateWindow(Settings)
 			return ToggleSettings
 		end
 
-        Topbar.ChangeSize.MouseButton1Click:Connect(function()
-            if Debounce then return end
-            if Minimised then
-                Minimised = false
-                Maximise()
-            else
-                if not SearchHided then SearchHided = true spawn(CloseSearch)  end
-                Minimised = true
-                Minimise()
-            end
-        end)
-        Topbar.Search.MouseButton1Click:Connect(function()
-            if Debounce or Minimised then return end
-            if SearchHided then
-                OpenSearch()
-                SearchHided = false
-            else
-                SearchHided = true
-                CloseSearch()
-            end
-        end)
-
 		-- Slider
 		function Tab:CreateSlider(SliderSettings)
 			local Dragging = false
@@ -2421,7 +2280,7 @@ function LynxfieldLibrary:CreateWindow(Settings)
 					Dragging = false 
 				end 
 			end)
-            
+
 			Slider.Main.Interact.MouseButton1Down:Connect(function(X)
 				local Current = Slider.Main.Progress.AbsolutePosition.X + Slider.Main.Progress.AbsoluteSize.X
 				local Start = Current
@@ -2517,9 +2376,10 @@ function LynxfieldLibrary:CreateWindow(Settings)
 	Elements.Visible = true
 
 	wait(0.7)
-    TweemService:Create(LoadingFrame.ImageLabel, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
+    TweenService:Create(LoadingFrame.ImageLabel, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {ImageTransparency = 1}):Play()
 	TweenService:Create(LoadingFrame.Title, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 	TweenService:Create(LoadingFrame.Subtitle, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
+	TweenService:Create(LoadingFrame.Version, TweenInfo.new(0.5, Enum.EasingStyle.Quint), {TextTransparency = 1}):Play()
 	wait(0.2)
 	TweenService:Create(Main, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Size = UDim2.new(0, 500, 0, 475)}):Play()
 	TweenService:Create(Main.Shadow.Image, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {ImageTransparency = 0.4}):Play()
