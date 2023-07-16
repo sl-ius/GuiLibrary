@@ -1,11 +1,10 @@
 --[[
 
 Lynxfield Interface Suite
-by Sirius & Modify by Sius
+by Sirius
 
 shlex | Designing + Programming
 iRay  | Programming
-Sius  | Designing + Programming
 
 ]]
 
@@ -115,7 +114,7 @@ local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 
 -- Interface Management
-local Lynxfield = game:GetObjects("rbxassetid://13853811008")[1]
+local Lynxfield = game:GetObjects("rbxassetid://14084109362")[1]
 
 Lynxfield.Enabled = false
 
