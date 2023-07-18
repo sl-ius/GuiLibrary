@@ -1988,7 +1988,11 @@ function LynxFieldLibrary:CreateWindow(Settings)
 		--Thumbnail
 		function Tab:CreateThumbnail(ImageSettings)
 			local Thumbnail = Elements.Template.Thumbnail:Clone()
-			Thumbnail.ImageLabel.Image = "rbxassetid://"..ImageSettings.Image or "rbxassetid://"..14109528733
+			if ImageSettings.Image then
+				Thumbnail.ImageLabel.Image = "rbxassetid://"..tostring(ImageSettings.Image) 
+			else
+				Notification.Icon.Image = "rbxassetid://14109528733"
+			end
 			Thumbnail.Visible = true
 			if ImageSettings.SectionParent then
 				Thumbnail.Parent = ImageSettings.SectionParent.Holder
