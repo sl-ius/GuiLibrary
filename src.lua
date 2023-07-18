@@ -11,7 +11,7 @@ Sius  | Designing + Programming + New Features
 
 
 
-local Release = "Personal"
+local Release = "Personal 2"
 local NotificationDuration = 6.5
 local LynxFieldFolder = "LynxField"
 local ConfigurationFolder = LynxFieldFolder.."/Configurations"
