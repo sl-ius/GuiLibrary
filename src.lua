@@ -1989,12 +1989,13 @@ function LynxFieldLibrary:CreateWindow(Settings)
 		function Tab:CreateThumbnail(ImageSettings)
 			local Thumbnail = Elements.Template.Thumbnail:Clone()
 			Thumbnail.ImageLabel.Image = "rbxassetid://"..ImageSettings.Image or "rbxassetid://"..14109528733
+			Thumbnail.Visible = true
 			if ImageSettings.SectionParent then
 				Thumbnail.Parent = ImageSettings.SectionParent.Holder
 			else
 				Thumbnail.Parent = TabPage
 			end
-			return InputSettings
+			return ImageSettings
 		end
 
 		-- Input
