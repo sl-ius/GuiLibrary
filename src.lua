@@ -6,8 +6,6 @@ by Sirius
 shlex | Designing + Programming
 iRay  | Programming
 
-Disclaimer: This version of Rayfield is modified by Sius
-
 ]]
 
 
@@ -116,7 +114,7 @@ local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 
 -- Interface Management
-local Rayfield = game:GetObjects("rbxassetid://10804731440")[1]
+local Rayfield = game:GetObjects("rbxassetid://14115620547")[1]
 
 Rayfield.Enabled = false
 
