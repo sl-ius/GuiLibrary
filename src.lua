@@ -47,6 +47,7 @@ local RayfieldLibrary = {
 			SliderBackground = Color3.fromRGB(83, 64, 159),
 			SliderProgress = Color3.fromRGB(83, 64, 159),
 			SliderStroke = Color3.fromRGB(133, 103, 255),
+            SliderProgressStroke = Color3.fromRGB(133, 103, 255),
 
 			ToggleBackground = Color3.fromRGB(30, 30, 30),
 			ToggleEnabled = Color3.fromRGB(83, 64, 159),
@@ -2246,6 +2247,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			Slider.Main.BackgroundColor3 = SelectedTheme.SliderBackground
 			Slider.Main.UIStroke.Color = SelectedTheme.SliderStroke
 			Slider.Main.Progress.BackgroundColor3 = SelectedTheme.SliderProgress
+            Slider.Main.Progress.UIStroke.Colr = SelectedTheme.SliderProgressStroke
 
 			TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
 			TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
