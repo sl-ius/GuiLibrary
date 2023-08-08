@@ -2247,7 +2247,7 @@ function RayfieldLibrary:CreateWindow(Settings)
 			Slider.Main.BackgroundColor3 = SelectedTheme.SliderBackground
 			Slider.Main.UIStroke.Color = SelectedTheme.SliderStroke
 			Slider.Main.Progress.BackgroundColor3 = SelectedTheme.SliderProgress
-            Slider.Main.Progress.UIStroke.Colr = SelectedTheme.SliderProgressStroke
+            Slider.Main.Progress.UIStroke.Color = SelectedTheme.SliderProgressStroke
 
 			TweenService:Create(Slider, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {BackgroundTransparency = 0}):Play()
 			TweenService:Create(Slider.UIStroke, TweenInfo.new(0.7, Enum.EasingStyle.Quint), {Transparency = 0}):Play()
