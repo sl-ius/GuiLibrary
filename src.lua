@@ -1,6 +1,6 @@
 --[[
 
-Rayfield Interface Suite
+Rayfield Interface Suite [ Modified by Sius ]
 by Sirius
 
 shlex | Designing + Programming
